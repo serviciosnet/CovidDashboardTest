@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="text-center">
+    <h1 class="display-4">COVID-19 Statistics</h1>
+    
+   @* <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="form-inline my-2 my-lg-0">
+                <label for="cmbProvidence">Provicence:</label>
+                <select id="cmbProvidence" class="form-control mr-sm-2" onchange="" />
+                <label for="trip-start">Start Date:</label>
+                <input type="date" id="start" name="trip-start" value="@DateTime.Today.ToString("yyyy-MM-dd")" min="2018-01-01" max="2030-12-31">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Report</button>
+            </form>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group me-2">
+                    <button type="button" class="btn btn-sm btn-btn-outline-secondary">xml</button>
+                    <button type="button" class="btn btn-sm btn-btn-outline-secondary">json</button>
+                    <button type="button" class="btn btn-sm btn-btn-outline-secondary">csv</button>
+                </div>
+            </div>
+        </div>
+    </nav>*@
+    <main class="col-md-12 ms-sm-auto col-lg-12 px-md-8">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Dashboard</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+            <input type="date" id="startDate" name="startDate" class="btn btn-sm btn-outline-secondary" value="@DateTime.Today.ToString("yyyy-MM-dd")" min="2018-01-01" max="2030-12-31" onchange="getPatientData();" />
+            <select id="cmbProvidence" name="filterId" class="btn btn-sm btn-outline-secondary" onchange="getPatientData();"></select>
+            @*EXPORT BUTTON*@
+            <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="ExportCSV();">
+                        <i class="glyphicon glyphicon glyphicon-download"></i>CSV
+                    </button>
+                   @* @using (Html.BeginForm("ExportToCSV", "Home", FormMethod.Post,new { startDate =  }))
+                    {
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                        <i class="glyphicon glyphicon glyphicon-download"></i>CSV
+                    </button>
+                }*@
+                @using (Html.BeginForm("ExportToCSV", "Home", FormMethod.Post))
+                {
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                        <i class="glyphicon glyphicon glyphicon-download"></i>XML
+                    </button>
+                }
+                @using (Html.BeginForm("ExportToCSV", "Home", FormMethod.Post))
+                {
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                        <i class="glyphicon glyphicon glyphicon-download"></i>JSON
+                    </button>
+                }
+
+            @*END EXPORT BUTTON*@
+          </div> @* END BTN-GROUP*@
+        </div>
+      </div>
+     
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th scope="col"><span id="tableTitle">Region</span></th>
+              <th scope="col">Confirmed Cases</th>
+              <th scope="col">Active Cases</th>
+              <th scope="col">Deceased Cases</th>
+              <th scope="col">Recovered Cases</th>
+            </tr>
+          </thead>
+          <tbody id="reportDetails">
+            <tr>
+                <td colspan='5''>No Data Found. Please Select another date or another Region</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </main>
+
+</div>
+@section Scripts {
+<script type="text/javascript">
+    $(document).ready(function(){
+       getProvidenceList();
+    });
+</script>
+}
+<style>
+    .dropdown-content a:hover {background-color: #fff;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #c2c1be;}
+</style>
+
+
